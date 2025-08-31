@@ -1,70 +1,157 @@
-# Getting Started with Create React App
+# Construction Management Software
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive construction project management system designed specifically for the Pakistani construction industry, particularly for projects in Karachi. This software tracks the complete construction lifecycle from land acquisition to project completion.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### 🏗️ Complete Project Lifecycle Management
+- **Pre-Construction Phase**: Land finding, feasibility, surveys, approvals, NOCs
+- **Construction Phase**: Floor-by-floor progress tracking with parallel work management
+- **Post-Construction**: Final inspections, utilities, handover
 
-### `npm start`
+### 📊 Progress Monitoring
+- Real-time project progress tracking
+- Phase-based workflow management
+- Visual progress indicators and dashboards
+- Floor-by-floor construction monitoring
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 👥 Stakeholder Management
+- Architect, Engineer, Contractor, and Supervisor tracking
+- Contact information and fee management
+- Role-based project access
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🧪 Quality Control
+- Cube test tracking and results
+- Engineer inspection scheduling
+- Compliance checkpoint management
+- Test result documentation
 
-### `npm test`
+### 💰 Financial Tracking
+- BOQ (Bill of Quantities) management
+- Payment tracking and approvals
+- Budget vs actual cost monitoring
+- Legal fees and transfer cost tracking
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technology Stack
 
-### `npm run build`
+- **Frontend**: React 19 with Material-UI
+- **Routing**: React Router
+- **Date Management**: Day.js with MUI Date Pickers
+- **State Management**: React Hooks (upgradeable to Redux/Context)
+- **Styling**: Material-UI Theme System
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Project Structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+src/
+├── components/
+│   ├── Layout.js          # Main application layout with navigation
+│   ├── Dashboard.js       # Project overview and statistics
+│   ├── ProjectList.js     # List of all projects
+│   ├── ProjectDetails.js  # Detailed project view with progress tracking
+│   └── NewProject.js      # Project creation form
+├── data/
+│   └── projectData.js     # Data structure and mock data
+└── App.js                 # Main application component
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started
 
-### `npm run eject`
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Installation
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd construction-software
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. Start the development server:
+```bash
+npm start
+```
 
-## Learn More
+4. Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Usage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Creating a New Project
 
-### Code Splitting
+1. Navigate to "New Project" from the sidebar
+2. Fill in the project information through the step-by-step form:
+   - **Basic Information**: Project name, location, client details
+   - **Land Details**: Address, area, price, survey dimensions, soil test results
+   - **Stakeholders**: Architect, contractor, and approval information
+   - **Financial**: Budget breakdown and cost tracking
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Monitoring Project Progress
 
-### Analyzing the Bundle Size
+1. Go to "Projects" to see all projects
+2. Click on a project to view detailed progress
+3. Use the tabs to navigate between:
+   - **Pre-Construction**: Task checklist and project setup
+   - **Construction**: Floor-by-floor progress tracking
+   - **Quality Control**: Test results and inspections
+   - **Financial**: Budget and payment tracking
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Construction Phase Workflow
 
-### Making a Progressive Web App
+The system follows the Pakistani construction workflow:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. **Foundation Work**: Piling → Raft → Plinth → Plinth Verification
+2. **Floor Construction**: 
+   - Grey structure (including chhat barhai)
+   - Finishing work (parallel to next floor's grey structure)
+3. **Quality Control**: Cube tests and engineer inspections at each stage
+4. **Finishing Tasks**: Elevation work, final inspections, utilities
 
-### Advanced Configuration
+## Key Features Explained
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Pre-Construction Data Entry
+All the essential information is captured before construction begins:
+- Land details and survey information
+- Soil test results and piling requirements
+- Stakeholder information and contracts
+- Approvals and NOC documentation
+- Financial planning and budgets
 
-### Deployment
+### Construction Progress Tracking
+- **Floor-by-Floor Monitoring**: Track grey structure and finishing work separately
+- **Parallel Work Management**: Handle simultaneous grey structure and finishing work
+- **Quality Checkpoints**: Integrated cube tests and engineer inspections
+- **Visual Progress**: Progress bars and completion indicators
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Pakistani Construction Standards
+- Follows local construction practices and terminology
+- Includes Pakistan-specific approvals (NOCs, plan approvals)
+- Supports local measurement units (sq yards, feet)
+- Incorporates local construction phases and terminology
 
-### `npm run build` fails to minify
+## Future Enhancements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **Database Integration**: Replace mock data with proper database
+- **Document Management**: Upload and manage construction documents
+- **Mobile App**: Field workers can update progress on mobile
+- **Reporting**: Generate progress reports and compliance documents
+- **Integration**: Connect with accounting software and project management tools
+- **Real-time Notifications**: Alert stakeholders about milestones and issues
+
+## Contributing
+
+This software is designed to be customizable for different construction workflows and regional requirements. Contributions are welcome to enhance functionality and adapt to other markets.
+
+## License
+
+[Add your license information here]
+
+---
+
+Built with ❤️ for the Pakistani construction industry
