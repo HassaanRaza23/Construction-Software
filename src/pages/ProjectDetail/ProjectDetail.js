@@ -6,21 +6,9 @@ import {
   Card,
   CardContent,
   Typography,
-  Stepper,
-  Step,
-  StepLabel,
-  StepContent,
   Button,
   Chip,
   LinearProgress,
-  Timeline,
-  TimelineItem,
-  TimelineSeparator,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-  TimelineOppositeContent,
-  Divider,
   List,
   ListItem,
   ListItemText,
@@ -37,6 +25,11 @@ import {
   MenuItem,
   IconButton,
   Tooltip,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Divider,
+  Box as MuiBox,
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
@@ -51,6 +44,13 @@ import {
   Foundation as FoundationIcon,
   Check as CheckIcon,
   Pending as PendingIcon,
+  ExpandMore as ExpandMoreIcon,
+  Update as UpdateIcon,
+  CalendarToday as CalendarIcon,
+  Person as PersonIcon,
+  Business as BusinessIcon,
+  TrendingUp as TrendingUpIcon,
+  AttachMoney as MoneyIcon,
 } from '@mui/icons-material';
 
 // Mock project data - this would come from your database
@@ -62,179 +62,130 @@ const mockProjectData = {
   startDate: '2024-01-15',
   endDate: '2025-06-30',
   budget: 'PKR 250,000,000',
-  currentPhase: 'Grey Structure - Floor 3',
+  currentPhase: 'Floor 3 Grey Structure',
   progress: 75,
-  status: 'active',
-  phase: 'construction',
-  subPhase: 'grey_structure',
-  floor: 3,
-  totalFloors: 8,
-  contractor: 'XYZ Construction',
-  architect: 'Design Studio',
-  engineer: 'Structural Solutions',
-  lastUpdated: '2024-12-19',
-  nextMilestone: 'Floor 3 Chhat Barhai',
-  nextMilestoneDate: '2024-12-25',
+  status: 'construction',
   
-  // Construction phases and milestones
-  phases: [
-    {
-      id: 'planning',
-      name: 'Planning & Feasibility',
-      status: 'completed',
-      progress: 100,
-      startDate: '2024-01-15',
-      endDate: '2024-03-15',
-      milestones: [
-        { id: 1, name: 'Land Survey Completed', status: 'completed', date: '2024-01-20' },
-        { id: 2, name: 'Soil Testing Completed', status: 'completed', date: '2024-02-01' },
-        { id: 3, name: 'Architectural Plan Approved', status: 'completed', date: '2024-02-15' },
-        { id: 4, name: 'Sale NOC Received', status: 'completed', date: '2024-03-10' },
-      ]
+  // Construction Progress (what we actually track)
+  constructionProgress: {
+    foundation: {
+      piling: { status: 'completed', date: '2024-04-01', notes: 'All piles completed', engineer: 'Ahmed Khan' },
+      raft: { status: 'completed', date: '2024-04-20', notes: 'Raft foundation ready', engineer: 'Ahmed Khan' },
+      plinth: { status: 'completed', date: '2024-05-10', notes: 'Plinth construction done', engineer: 'Ahmed Khan' },
+      verification: { status: 'completed', date: '2024-05-15', notes: 'Engineer approved', engineer: 'Ahmed Khan' },
     },
-    {
-      id: 'foundation',
-      name: 'Foundation Work',
-      status: 'completed',
-      progress: 100,
-      startDate: '2024-03-16',
-      endDate: '2024-05-15',
-      milestones: [
-        { id: 5, name: 'Piling Work Completed', status: 'completed', date: '2024-04-01' },
-        { id: 6, name: 'Raft Foundation Completed', status: 'completed', date: '2024-04-20' },
-        { id: 7, name: 'Plinth Completed', status: 'completed', date: '2024-05-10' },
-        { id: 8, name: 'Plinth Verification Approved', status: 'completed', date: '2024-05-15' },
-      ]
-    },
-    {
-      id: 'construction',
-      name: 'Construction',
-      status: 'active',
-      progress: 75,
-      startDate: '2024-05-16',
-      endDate: '2025-05-15',
-      milestones: [
-        { id: 9, name: 'Ground Floor Grey Structure', status: 'completed', date: '2024-06-15' },
-        { id: 10, name: 'Ground Floor Finishing', status: 'completed', date: '2024-07-30' },
-        { id: 11, name: '1st Floor Grey Structure', status: 'completed', date: '2024-08-30' },
-        { id: 12, name: '1st Floor Finishing', status: 'completed', date: '2024-10-15' },
-        { id: 13, name: '2nd Floor Grey Structure', status: 'completed', date: '2024-11-15' },
-        { id: 14, name: '2nd Floor Finishing', status: 'completed', date: '2024-12-10' },
-        { id: 15, name: '3rd Floor Grey Structure', status: 'in_progress', date: '2024-12-19' },
-        { id: 16, name: '3rd Floor Finishing', status: 'pending', date: null },
-        { id: 17, name: '4th Floor Grey Structure', status: 'pending', date: null },
-        { id: 18, name: '4th Floor Finishing', status: 'pending', date: null },
-        { id: 19, name: '5th Floor Grey Structure', status: 'pending', date: null },
-        { id: 20, name: '5th Floor Finishing', status: 'pending', date: null },
-        { id: 21, name: '6th Floor Grey Structure', status: 'pending', date: null },
-        { id: 22, name: '6th Floor Finishing', status: 'pending', date: null },
-        { id: 23, name: '7th Floor Grey Structure', status: 'pending', date: null },
-        { id: 24, name: '7th Floor Finishing', status: 'pending', date: null },
-      ]
-    },
-    {
-      id: 'elevation',
-      name: 'Elevation & Final Work',
-      status: 'pending',
-      progress: 0,
-      startDate: '2025-05-16',
-      endDate: '2025-06-15',
-      milestones: [
-        { id: 25, name: 'Elevation Plastering', status: 'pending', date: null },
-        { id: 26, name: 'Elevation Painting', status: 'pending', date: null },
-        { id: 27, name: 'Final Inspections', status: 'pending', date: null },
-        { id: 28, name: 'Project Handover', status: 'pending', date: null },
-      ]
+    floors: [
+      {
+        floorNumber: 0,
+        name: 'Ground Floor',
+        greyStructure: { status: 'completed', date: '2024-06-15', notes: 'Structure ready', engineer: 'Ahmed Khan' },
+        finishing: { status: 'completed', date: '2024-07-30', notes: 'All finishing done', engineer: 'Ahmed Khan' },
+        chhatBarhai: { status: 'completed', date: '2024-06-20', notes: 'Roof completed', engineer: 'Ahmed Khan' },
+      },
+      {
+        floorNumber: 1,
+        name: '1st Floor',
+        greyStructure: { status: 'completed', date: '2024-08-30', notes: 'Structure ready', engineer: 'Ahmed Khan' },
+        finishing: { status: 'completed', date: '2024-10-15', notes: 'All finishing done', engineer: 'Ahmed Khan' },
+        chhatBarhai: { status: 'completed', date: '2024-09-05', notes: 'Roof completed', engineer: 'Ahmed Khan' },
+      },
+      {
+        floorNumber: 2,
+        name: '2nd Floor',
+        greyStructure: { status: 'completed', date: '2024-11-15', notes: 'Structure ready', engineer: 'Ahmed Khan' },
+        finishing: { status: 'in_progress', date: '2024-12-10', notes: 'Tiling in progress', engineer: 'Ahmed Khan' },
+        chhatBarhai: { status: 'completed', date: '2024-11-25', notes: 'Roof completed', engineer: 'Ahmed Khan' },
+      },
+      {
+        floorNumber: 3,
+        name: '3rd Floor',
+        greyStructure: { status: 'in_progress', date: '2024-12-19', notes: 'Columns in progress', engineer: 'Ahmed Khan' },
+        finishing: { status: 'not_started', date: null, notes: 'Waiting for structure', engineer: null },
+        chhatBarhai: { status: 'not_started', date: null, notes: 'Waiting for structure', engineer: null },
+      },
+      {
+        floorNumber: 4,
+        name: '4th Floor',
+        greyStructure: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+        finishing: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+        chhatBarhai: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+      },
+      {
+        floorNumber: 5,
+        name: '5th Floor',
+        greyStructure: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+        finishing: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+        chhatBarhai: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+      },
+      {
+        floorNumber: 6,
+        name: '6th Floor',
+        greyStructure: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+        finishing: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+        chhatBarhai: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+      },
+      {
+        floorNumber: 7,
+        name: '7th Floor',
+        greyStructure: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+        finishing: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+        chhatBarhai: { status: 'not_started', date: null, notes: 'Not started yet', engineer: null },
+      }
+    ],
+    elevation: {
+      plastering: { status: 'not_started', date: null, notes: 'Will start after all floors', engineer: null },
+      painting: { status: 'not_started', date: null, notes: 'Will start after plastering', engineer: null },
+      finalInspection: { status: 'not_started', date: null, notes: 'Final quality check', engineer: null },
+      handover: { status: 'not_started', date: null, notes: 'Project completion', engineer: null },
     }
-  ],
+  },
   
-  // Current tasks
-  currentTasks: [
-    {
-      id: 1,
-      name: '3rd Floor Column Work',
-      description: 'Complete RCC columns for 3rd floor',
-      assignedTo: 'Site Engineer',
-      dueDate: '2024-12-22',
-      status: 'in_progress',
-      priority: 'high',
-      progress: 60,
-    },
-    {
-      id: 2,
-      name: '2nd Floor Tiling',
-      description: 'Complete bathroom and kitchen tiling',
-      assignedTo: 'Tiling Team',
-      dueDate: '2024-12-25',
-      status: 'in_progress',
-      priority: 'medium',
-      progress: 40,
-    },
-    {
-      id: 3,
-      name: 'Material Procurement',
-      description: 'Order steel and cement for next phase',
-      assignedTo: 'Procurement Team',
-      dueDate: '2024-12-20',
-      status: 'pending',
-      priority: 'high',
-      progress: 0,
-    },
-  ],
+  // Quality Control Tracking
+  qualityControl: {
+    cubeTests: [
+      { floor: 'Ground Floor', date: '2024-06-18', result: 'Passed', strength: '25 MPa', engineer: 'Ahmed Khan' },
+      { floor: '1st Floor', date: '2024-08-25', result: 'Passed', strength: '26 MPa', engineer: 'Ahmed Khan' },
+      { floor: '2nd Floor', date: '2024-11-18', result: 'Passed', strength: '24 MPa', engineer: 'Ahmed Khan' },
+      { floor: '3rd Floor', date: '2024-12-18', result: 'Scheduled', strength: 'Pending', engineer: 'Ahmed Khan' },
+    ],
+    engineerInspections: [
+      { floor: 'Ground Floor', date: '2024-07-25', engineer: 'Ahmed Khan', status: 'Approved', notes: 'All work approved' },
+      { floor: '1st Floor', date: '2024-10-10', engineer: 'Ahmed Khan', status: 'Approved', notes: 'Quality standards met' },
+      { floor: '2nd Floor', date: '2024-12-15', engineer: 'Ahmed Khan', status: 'Pending', notes: 'Scheduled for inspection' },
+    ]
+  },
   
-  // Quality control records
-  qualityChecks: [
-    {
-      id: 1,
-      type: 'Cube Test',
-      description: '3rd Floor Concrete Cube Test',
-      date: '2024-12-18',
-      result: 'Passed',
-      engineer: 'Structural Engineer',
-      notes: 'All cubes passed strength test',
-    },
-    {
-      id: 2,
-      type: 'Engineer Inspection',
-      description: '2nd Floor Finishing Inspection',
-      date: '2024-12-15',
-      result: 'Passed with minor corrections',
-      engineer: 'Civil Engineer',
-      notes: 'Minor touch-ups required in bathrooms',
-    },
-    {
-      id: 3,
-      type: 'Material Test',
-      description: 'Steel Quality Test',
-      date: '2024-12-10',
-      result: 'Passed',
-      engineer: 'Quality Engineer',
-      notes: 'Steel meets all specifications',
-    },
-  ],
+  // Team Information
+  team: {
+    architect: 'Design Studio',
+    engineer: 'Structural Solutions',
+    contractor: 'XYZ Construction',
+    supervisingStaff: 'Site Engineers Team',
+  },
   
-  // Financial tracking
+  // Financial Tracking
   financials: {
     totalBudget: 250000000,
     spent: 187500000,
-    committed: 200000000,
     remaining: 62500000,
     breakdown: {
-      land: 50000000,
-      approvals: 10000000,
       foundation: 30000000,
-      construction: 97500000,
-      finishing: 0,
+      greyStructure: 75000000,
+      finishing: 22500000,
+      materials: 60000000,
     }
-  }
+  },
+  
+  lastUpdated: '2024-12-19',
+  nextMilestone: '3rd Floor Chhat Barhai',
+  nextMilestoneDate: '2024-12-25',
 };
 
 const getStatusColor = (status) => {
   switch (status) {
     case 'completed': return 'success';
     case 'in_progress': return 'primary';
-    case 'pending': return 'warning';
-    case 'delayed': return 'error';
+    case 'not_started': return 'default';
     default: return 'default';
   }
 };
@@ -242,127 +193,383 @@ const getStatusColor = (status) => {
 const getStatusIcon = (status) => {
   switch (status) {
     case 'completed': return <CheckCircleIcon />;
-    case 'in_progress': return <ScheduleIcon />;
-    case 'pending': return <PendingIcon />;
-    case 'delayed': return <WarningIcon />;
-    default: return <PendingIcon />;
+    case 'in_progress': return <ConstructionIcon />;
+    case 'not_started': return <AssignmentIcon />;
+    default: return <AssignmentIcon />;
   }
 };
 
-const PhaseCard = ({ phase, isActive }) => (
-  <Card sx={{ mb: 2, border: isActive ? '2px solid' : '1px solid', borderColor: isActive ? 'primary.main' : 'divider' }}>
+const ConstructionPhaseCard = ({ title, phases, onUpdatePhase }) => (
+  <Card sx={{ mb: 2 }}>
     <CardContent>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          {phase.name}
-        </Typography>
-        <Chip 
-          label={phase.status.replace('_', ' ').toUpperCase()} 
-          color={getStatusColor(phase.status)}
-          size="small"
-        />
-      </Box>
+      <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+        {title}
+      </Typography>
       
-      <Box sx={{ mb: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-          <Typography variant="body2" color="textSecondary">Progress</Typography>
-          <Typography variant="body2" color="primary.main" fontWeight="bold">
-            {phase.progress}%
-          </Typography>
-        </Box>
-        <LinearProgress 
-          variant="determinate" 
-          value={phase.progress} 
-          sx={{ height: 8, borderRadius: 4 }}
-        />
-      </Box>
-      
-      <Box sx={{ mb: 2 }}>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
-          Milestones ({phase.milestones.filter(m => m.status === 'completed').length}/{phase.milestones.length})
-        </Typography>
-        <List dense>
-          {phase.milestones.map((milestone) => (
-            <ListItem key={milestone.id} sx={{ py: 0.5 }}>
-              <ListItemIcon sx={{ minWidth: 32 }}>
-                {getStatusIcon(milestone.status)}
-              </ListItemIcon>
-              <ListItemText 
-                primary={milestone.name}
-                secondary={milestone.date ? new Date(milestone.date).toLocaleDateString() : 'Pending'}
-                primaryTypographyProps={{ variant: 'body2' }}
-                secondaryTypographyProps={{ variant: 'caption' }}
+      {Object.entries(phases).map(([key, phase]) => (
+        <Box key={key} sx={{ mb: 2, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+            <Typography variant="body2" fontWeight="bold" sx={{ textTransform: 'capitalize' }}>
+              {key.replace(/([A-Z])/g, ' $1').trim()}
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              <Chip 
+                label={phase.status.replace('_', ' ').toUpperCase()} 
+                color={getStatusColor(phase.status)}
+                size="small"
               />
-            </ListItem>
-          ))}
-        </List>
-      </Box>
+              <IconButton 
+                size="small" 
+                onClick={() => onUpdatePhase(key, phase)}
+                color="primary"
+              >
+                <UpdateIcon />
+              </IconButton>
+            </Box>
+          </Box>
+          
+          <Typography variant="body2" color="textSecondary" gutterBottom>
+            {phase.notes}
+          </Typography>
+          
+          {phase.date && (
+            <Typography variant="caption" color="textSecondary">
+              Date: {new Date(phase.date).toLocaleDateString()}
+            </Typography>
+          )}
+          
+          {phase.engineer && (
+            <Typography variant="caption" color="textSecondary" display="block">
+              Engineer: {phase.engineer}
+            </Typography>
+          )}
+        </Box>
+      ))}
     </CardContent>
   </Card>
 );
 
-const TaskCard = ({ task }) => (
+const FloorProgressCard = ({ floor, onUpdateFloor }) => (
   <Card sx={{ mb: 2 }}>
     <CardContent>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-        <Box>
-          <Typography variant="h6" gutterBottom>
-            {task.name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            {task.description}
-          </Typography>
-        </Box>
-        <Chip 
-          label={task.priority.toUpperCase()} 
-          color={task.priority === 'high' ? 'error' : task.priority === 'medium' ? 'warning' : 'success'}
-          size="small"
-        />
-      </Box>
+      <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+        {floor.name}
+      </Typography>
       
-      <Box sx={{ mb: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-          <Typography variant="body2">Progress</Typography>
-          <Typography variant="body2" color="primary.main" fontWeight="bold">
-            {task.progress}%
-          </Typography>
-        </Box>
-        <LinearProgress 
-          variant="determinate" 
-          value={task.progress} 
-          sx={{ height: 6, borderRadius: 3 }}
-        />
-      </Box>
-      
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography variant="body2" color="textSecondary">
-          Assigned to: {task.assignedTo}
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          Due: {new Date(task.dueDate).toLocaleDateString()}
-        </Typography>
-      </Box>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={4}>
+          <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Typography variant="body2" fontWeight="bold">
+                Grey Structure
+              </Typography>
+              <Chip 
+                label={floor.greyStructure.status.replace('_', ' ').toUpperCase()} 
+                color={getStatusColor(floor.greyStructure.status)}
+                size="small"
+              />
+            </Box>
+            <Typography variant="body2" color="textSecondary" gutterBottom>
+              {floor.greyStructure.notes}
+            </Typography>
+            {floor.greyStructure.date && (
+              <Typography variant="caption" color="textSecondary">
+                Date: {new Date(floor.greyStructure.date).toLocaleDateString()}
+              </Typography>
+            )}
+            <Button
+              size="small"
+              startIcon={<UpdateIcon />}
+              onClick={() => onUpdateFloor(floor.floorNumber, 'greyStructure')}
+              sx={{ mt: 1 }}
+            >
+              Update
+            </Button>
+          </Box>
+        </Grid>
+        
+        <Grid item xs={12} md={4}>
+          <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Typography variant="body2" fontWeight="bold">
+                Finishing
+              </Typography>
+              <Chip 
+                label={floor.finishing.status.replace('_', ' ').toUpperCase()} 
+                color={getStatusColor(floor.finishing.status)}
+                size="small"
+              />
+            </Box>
+            <Typography variant="body2" color="textSecondary" gutterBottom>
+              {floor.finishing.notes}
+            </Typography>
+            {floor.finishing.date && (
+              <Typography variant="caption" color="textSecondary">
+                Date: {new Date(floor.finishing.date).toLocaleDateString()}
+              </Typography>
+            )}
+            <Button
+              size="small"
+              startIcon={<UpdateIcon />}
+              onClick={() => onUpdateFloor(floor.floorNumber, 'finishing')}
+              sx={{ mt: 1 }}
+            >
+              Update
+            </Button>
+          </Box>
+        </Grid>
+        
+        <Grid item xs={12} md={4}>
+          <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+              <Typography variant="body2" fontWeight="bold">
+                Chhat Barhai
+              </Typography>
+              <Chip 
+                label={floor.chhatBarhai.status.replace('_', ' ').toUpperCase()} 
+                color={getStatusColor(floor.chhatBarhai.status)}
+                size="small"
+              />
+            </Box>
+            <Typography variant="body2" color="textSecondary" gutterBottom>
+              {floor.chhatBarhai.notes}
+            </Typography>
+            {floor.chhatBarhai.date && (
+              <Typography variant="caption" color="textSecondary">
+                Date: {new Date(floor.chhatBarhai.date).toLocaleDateString()}
+              </Typography>
+            )}
+            <Button
+              size="small"
+              startIcon={<UpdateIcon />}
+              onClick={() => onUpdateFloor(floor.floorNumber, 'chhatBarhai')}
+              sx={{ mt: 1 }}
+            >
+              Update
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
     </CardContent>
   </Card>
 );
+
+const QualityControlCard = ({ qualityControl }) => (
+  <Card sx={{ mb: 2 }}>
+    <CardContent>
+      <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+        Quality Control
+      </Typography>
+      
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="subtitle1">Cube Tests</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {qualityControl.cubeTests.map((test, index) => (
+            <Box key={index} sx={{ mb: 2, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                <Typography variant="body2" fontWeight="bold">
+                  {test.floor}
+                </Typography>
+                <Chip 
+                  label={test.result} 
+                  color={test.result === 'Passed' ? 'success' : 'warning'}
+                  size="small"
+                />
+              </Box>
+              <Typography variant="body2" color="textSecondary">
+                Strength: {test.strength} | Date: {new Date(test.date).toLocaleDateString()}
+              </Typography>
+              <Typography variant="caption" color="textSecondary">
+                Engineer: {test.engineer}
+              </Typography>
+            </Box>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+      
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="subtitle1">Engineer Inspections</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {qualityControl.engineerInspections.map((inspection, index) => (
+            <Box key={index} sx={{ mb: 2, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                <Typography variant="body2" fontWeight="bold">
+                  {inspection.floor}
+                </Typography>
+                <Chip 
+                  label={inspection.status} 
+                  color={inspection.status === 'Approved' ? 'success' : 'warning'}
+                  size="small"
+                />
+              </Box>
+              <Typography variant="body2" color="textSecondary">
+                Date: {new Date(inspection.date).toLocaleDateString()}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Engineer: {inspection.engineer}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Notes: {inspection.notes}
+              </Typography>
+            </Box>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+    </CardContent>
+  </Card>
+);
+
+// Update Progress Dialog
+const UpdateProgressDialog = ({ open, onClose, onSave, phaseData, phaseType, floorNumber }) => {
+  const [formData, setFormData] = useState({
+    status: phaseData?.status || 'not_started',
+    date: phaseData?.date || new Date().toISOString().split('T')[0],
+    notes: phaseData?.notes || '',
+    engineer: phaseData?.engineer || 'Ahmed Khan',
+  });
+
+  const handleSubmit = () => {
+    onSave(formData);
+    onClose();
+  };
+
+  const getPhaseTitle = () => {
+    if (floorNumber !== undefined) {
+      const floorNames = ['Ground Floor', '1st Floor', '2nd Floor', '3rd Floor', '4th Floor', '5th Floor', '6th Floor', '7th Floor'];
+      return `${floorNames[floorNumber]} - ${phaseType.replace(/([A-Z])/g, ' $1').trim()}`;
+    }
+    return phaseType.replace(/([A-Z])/g, ' $1').trim();
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+        Update Progress: {getPhaseTitle()}
+      </DialogTitle>
+      <DialogContent>
+        <Box sx={{ mt: 2 }}>
+          <FormControl fullWidth sx={{ mb: 2 }}>
+            <InputLabel>Status</InputLabel>
+            <Select
+              value={formData.status}
+              label="Status"
+              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+            >
+              <MenuItem value="not_started">Not Started</MenuItem>
+              <MenuItem value="in_progress">In Progress</MenuItem>
+              <MenuItem value="completed">Completed</MenuItem>
+            </Select>
+          </FormControl>
+          
+          <TextField
+            fullWidth
+            type="date"
+            label="Date"
+            value={formData.date}
+            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            InputLabelProps={{ shrink: true }}
+            sx={{ mb: 2 }}
+          />
+          
+          <TextField
+            fullWidth
+            label="Notes"
+            multiline
+            rows={3}
+            value={formData.notes}
+            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          
+          <TextField
+            fullWidth
+            label="Engineer"
+            value={formData.engineer}
+            onChange={(e) => setFormData({ ...formData, engineer: e.target.value })}
+          />
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={handleSubmit} variant="contained">
+          Update Progress
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 function ProjectDetail() {
   const { id } = useParams();
-  const [project] = useState(mockProjectData);
-  const [activeStep, setActiveStep] = useState(2); // Construction phase
-  const [openTaskDialog, setOpenTaskDialog] = useState(false);
+  const [project, setProject] = useState(mockProjectData);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [updateData, setUpdateData] = useState({});
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const handleUpdatePhase = (phaseKey, phaseData) => {
+    setUpdateData({ type: 'phase', key: phaseKey, data: phaseData });
+    setOpenUpdateDialog(true);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const handleUpdateFloor = (floorNumber, phaseType) => {
+    const floor = project.constructionProgress.floors[floorNumber];
+    setUpdateData({ type: 'floor', floorNumber, phaseType, data: floor[phaseType] });
+    setOpenUpdateDialog(true);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
+  const handleSaveUpdate = (formData) => {
+    if (updateData.type === 'phase') {
+      setProject(prev => ({
+        ...prev,
+        constructionProgress: {
+          ...prev.constructionProgress,
+          [updateData.key]: { ...prev.constructionProgress[updateData.key], ...formData }
+        }
+      }));
+    } else if (updateData.type === 'floor') {
+      setProject(prev => ({
+        ...prev,
+        constructionProgress: {
+          ...prev.constructionProgress,
+          floors: prev.constructionProgress.floors.map((floor, index) => 
+            index === updateData.floorNumber 
+              ? { ...floor, [updateData.phaseType]: { ...floor[updateData.phaseType], ...formData } }
+              : floor
+          )
+        }
+      }));
+    }
   };
+
+  // Calculate overall progress
+  const calculateProgress = () => {
+    const totalPhases = 3 + project.constructionProgress.floors.length * 3 + 4; // foundation + floors + elevation
+    let completedPhases = 0;
+    
+    // Foundation phases
+    Object.values(project.constructionProgress.foundation).forEach(phase => {
+      if (phase.status === 'completed') completedPhases++;
+    });
+    
+    // Floor phases
+    project.constructionProgress.floors.forEach(floor => {
+      if (floor.greyStructure.status === 'completed') completedPhases++;
+      if (floor.finishing.status === 'completed') completedPhases++;
+      if (floor.chhatBarhai.status === 'completed') completedPhases++;
+    });
+    
+    // Elevation phases
+    Object.values(project.constructionProgress.elevation).forEach(phase => {
+      if (phase.status === 'completed') completedPhases++;
+    });
+    
+    return Math.round((completedPhases / totalPhases) * 100);
+  };
+
+  const progress = calculateProgress();
 
   return (
     <Box>
@@ -378,20 +585,20 @@ function ProjectDetail() {
                 {project.location}
               </Typography>
               <Typography variant="body1" color="textSecondary">
-                Client: {project.client} | Contractor: {project.contractor}
+                Client: {project.client} | Contractor: {project.team.contractor}
               </Typography>
             </Box>
             <Box sx={{ textAlign: 'right' }}>
               <Chip 
                 label={project.status.toUpperCase()} 
-                color={project.status === 'active' ? 'success' : 'default'}
+                color={project.status === 'construction' ? 'primary' : 'success'}
                 size="large"
               />
               <Typography variant="h5" sx={{ mt: 1, fontWeight: 'bold' }}>
-                {project.progress}%
+                {progress}%
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                Overall Progress
+                Construction Progress
               </Typography>
             </Box>
           </Box>
@@ -418,169 +625,156 @@ function ProjectDetail() {
       </Card>
 
       <Grid container spacing={3}>
-        {/* Construction Phases */}
+        {/* Construction Progress */}
         <Grid item xs={12} lg={8}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
-                Construction Phases & Progress
-              </Typography>
-              
-              {project.phases.map((phase, index) => (
-                <PhaseCard 
-                  key={phase.id} 
-                  phase={phase} 
-                  isActive={phase.status === 'active'}
-                />
-              ))}
-            </CardContent>
-          </Card>
+          <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
+            Construction Progress Tracking
+          </Typography>
+          
+          {/* Foundation Progress */}
+          <ConstructionPhaseCard
+            title="Foundation Work"
+            phases={project.constructionProgress.foundation}
+            onUpdatePhase={handleUpdatePhase}
+          />
+          
+          {/* Floor Progress */}
+          <Typography variant="h6" gutterBottom sx={{ mt: 4, mb: 2 }}>
+            Floor-by-Floor Progress
+          </Typography>
+          {project.constructionProgress.floors.map((floor) => (
+            <FloorProgressCard
+              key={floor.floorNumber}
+              floor={floor}
+              onUpdateFloor={handleUpdateFloor}
+            />
+          ))}
+          
+          {/* Elevation Progress */}
+          <ConstructionPhaseCard
+            title="Elevation & Final Work"
+            phases={project.constructionProgress.elevation}
+            onUpdatePhase={handleUpdatePhase}
+          />
         </Grid>
 
-        {/* Current Tasks & Quality Control */}
+        {/* Sidebar */}
         <Grid item xs={12} lg={4}>
+          {/* Quality Control */}
+          <QualityControlCard qualityControl={project.qualityControl} />
+          
+          {/* Team Information */}
           <Card sx={{ mb: 3 }}>
             <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography variant="h6">
-                  Current Tasks
-                </Typography>
-                <IconButton size="small" onClick={() => setOpenTaskDialog(true)}>
-                  <AddIcon />
-                </IconButton>
-              </Box>
-              
-              {project.currentTasks.map((task) => (
-                <TaskCard key={task.id} task={task} />
-              ))}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent>
               <Typography variant="h6" gutterBottom>
-                Recent Quality Checks
+                Project Team
               </Typography>
-              
-              {project.qualityChecks.slice(0, 3).map((check) => (
-                <Box key={check.id} sx={{ mb: 2, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                    <Typography variant="body2" fontWeight="bold">
-                      {check.type}
-                    </Typography>
-                    <Chip 
-                      label={check.result} 
-                      color={check.result === 'Passed' ? 'success' : 'warning'}
-                      size="small"
-                    />
-                  </Box>
-                  <Typography variant="body2" color="textSecondary" gutterBottom>
-                    {check.description}
-                  </Typography>
-                  <Typography variant="caption" color="textSecondary">
-                    {new Date(check.date).toLocaleDateString()} • {check.engineer}
-                  </Typography>
-                </Box>
-              ))}
+              <List dense>
+                <ListItem>
+                  <ListItemIcon>
+                    <PersonIcon />
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary="Architect" 
+                    secondary={project.team.architect}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <EngineeringIcon />
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary="Engineer" 
+                    secondary={project.team.engineer}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <BusinessIcon />
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary="Contractor" 
+                    secondary={project.team.contractor}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <PersonIcon />
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary="Supervising Staff" 
+                    secondary={project.team.supervisingStaff}
+                  />
+                </ListItem>
+              </List>
             </CardContent>
           </Card>
-        </Grid>
 
-        {/* Financial Overview */}
-        <Grid item xs={12}>
+          {/* Financial Overview */}
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 Financial Overview
               </Typography>
               
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={3}>
-                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
-                    <Typography variant="h4" color="primary.main" fontWeight="bold">
-                      {Math.round((project.financials.spent / project.financials.totalBudget) * 100)}%
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      Budget Spent
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={3}>
-                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
-                    <Typography variant="h4" color="success.main" fontWeight="bold">
-                      PKR {Math.round(project.financials.remaining / 1000000)}M
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      Remaining Budget
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={3}>
-                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
-                    <Typography variant="h4" color="warning.main" fontWeight="bold">
-                      PKR {Math.round(project.financials.committed / 1000000)}M
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      Committed
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} md={3}>
-                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
-                    <Typography variant="h4" color="info.main" fontWeight="bold">
-                      PKR {Math.round(project.financials.totalBudget / 1000000)}M
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      Total Budget
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
+              <Box sx={{ mb: 2 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                  <Typography variant="body2" color="textSecondary">Budget Spent</Typography>
+                  <Typography variant="body2" fontWeight="bold">
+                    {Math.round((project.financials.spent / project.financials.totalBudget) * 100)}%
+                  </Typography>
+                </Box>
+                <LinearProgress 
+                  variant="determinate" 
+                  value={(project.financials.spent / project.financials.totalBudget) * 100} 
+                  sx={{ height: 8, borderRadius: 4 }}
+                />
+              </Box>
+              
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="textSecondary" gutterBottom>
+                  Budget Breakdown
+                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                  <Typography variant="caption">Foundation</Typography>
+                  <Typography variant="caption">PKR {Math.round(project.financials.breakdown.foundation / 1000000)}M</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                  <Typography variant="caption">Grey Structure</Typography>
+                  <Typography variant="caption">PKR {Math.round(project.financials.breakdown.greyStructure / 1000000)}M</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                  <Typography variant="caption">Finishing</Typography>
+                  <Typography variant="caption">PKR {Math.round(project.financials.breakdown.finishing / 1000000)}M</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                  <Typography variant="caption">Materials</Typography>
+                  <Typography variant="caption">PKR {Math.round(project.financials.breakdown.materials / 1000000)}M</Typography>
+                </Box>
+              </Box>
+              
+              <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+                <Typography variant="h6" color="success.main" fontWeight="bold">
+                  PKR {Math.round(project.financials.remaining / 1000000)}M
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Remaining Budget
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
         </Grid>
       </Grid>
 
-      {/* Add Task Dialog */}
-      <Dialog open={openTaskDialog} onClose={() => setOpenTaskDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Add New Task</DialogTitle>
-        <DialogContent>
-          <Box sx={{ mt: 2 }}>
-            <TextField
-              fullWidth
-              label="Task Name"
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              fullWidth
-              label="Description"
-              multiline
-              rows={3}
-              sx={{ mb: 2 }}
-            />
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="Assigned To"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  type="date"
-                  label="Due Date"
-                  InputLabelProps={{ shrink: true }}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenTaskDialog(false)}>Cancel</Button>
-          <Button variant="contained">Add Task</Button>
-        </DialogActions>
-      </Dialog>
+      {/* Update Progress Dialog */}
+      <UpdateProgressDialog
+        open={openUpdateDialog}
+        onClose={() => setOpenUpdateDialog(false)}
+        onSave={handleSaveUpdate}
+        phaseData={updateData.data}
+        phaseType={updateData.phaseType}
+        floorNumber={updateData.floorNumber}
+      />
     </Box>
   );
 }
