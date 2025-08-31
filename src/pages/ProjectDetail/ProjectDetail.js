@@ -13,7 +13,6 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Avatar,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -24,33 +23,19 @@ import {
   Select,
   MenuItem,
   IconButton,
-  Tooltip,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Divider,
-  Box as MuiBox,
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
-  Schedule as ScheduleIcon,
-  Warning as WarningIcon,
-  Edit as EditIcon,
-  Add as AddIcon,
   Assignment as AssignmentIcon,
   Engineering as EngineeringIcon,
   Construction as ConstructionIcon,
-  Home as HomeIcon,
-  Foundation as FoundationIcon,
-  Check as CheckIcon,
-  Pending as PendingIcon,
   ExpandMore as ExpandMoreIcon,
   Update as UpdateIcon,
-  CalendarToday as CalendarIcon,
   Person as PersonIcon,
   Business as BusinessIcon,
-  TrendingUp as TrendingUpIcon,
-  AttachMoney as MoneyIcon,
 } from '@mui/icons-material';
 
 // Mock project data - this would come from your database
@@ -190,14 +175,7 @@ const getStatusColor = (status) => {
   }
 };
 
-const getStatusIcon = (status) => {
-  switch (status) {
-    case 'completed': return <CheckCircleIcon />;
-    case 'in_progress': return <ConstructionIcon />;
-    case 'not_started': return <AssignmentIcon />;
-    default: return <AssignmentIcon />;
-  }
-};
+
 
 const ConstructionPhaseCard = ({ title, phases, onUpdatePhase }) => (
   <Card sx={{ mb: 2 }}>
@@ -504,7 +482,6 @@ const UpdateProgressDialog = ({ open, onClose, onSave, phaseData, phaseType, flo
 };
 
 function ProjectDetail() {
-  const { id } = useParams();
   const [project, setProject] = useState(mockProjectData);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [updateData, setUpdateData] = useState({});

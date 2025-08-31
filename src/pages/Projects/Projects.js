@@ -7,17 +7,10 @@ import {
   Typography,
   Button,
   Chip,
-  Avatar,
   LinearProgress,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   IconButton,
   Tooltip,
   Stepper,
@@ -29,23 +22,16 @@ import {
   ListItemText,
   ListItemIcon,
   Checkbox,
-  Divider,
 } from '@mui/material';
 import {
   Add as AddIcon,
-  Business as BusinessIcon,
   LocationOn as LocationIcon,
-  Person as PersonIcon,
-  CalendarToday as CalendarIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
   Visibility as ViewIcon,
   CheckCircle as CheckCircleIcon,
   Assignment as AssignmentIcon,
-  Engineering as EngineeringIcon,
   Construction as ConstructionIcon,
-  Inventory as InventoryIcon,
-  Upload as UploadIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -278,20 +264,12 @@ const getStatusColor = (status) => {
     case 'in_progress': return 'primary';
     case 'not_started': return 'default';
     case 'construction': return 'primary';
-    case 'completed': return 'success';
     case 'on_hold': return 'warning';
     default: return 'default';
   }
 };
 
-const getStatusIcon = (status) => {
-  switch (status) {
-    case 'completed': return <CheckCircleIcon />;
-    case 'in_progress': return <ConstructionIcon />;
-    case 'not_started': return <AssignmentIcon />;
-    default: return <AssignmentIcon />;
-  }
-};
+
 
 const ProjectCard = ({ project, onEdit, onDelete, onView }) => {
   const navigate = useNavigate();
@@ -846,7 +824,6 @@ const ProjectSetupWizard = ({ open, onClose, onSave }) => {
 
 function Projects() {
   const [projects, setProjects] = useState(mockProjects);
-  const [openDialog, setOpenDialog] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [openSetupWizard, setOpenSetupWizard] = useState(false);
 
@@ -856,7 +833,6 @@ function Projects() {
 
   const handleEditProject = (project) => {
     setEditingProject(project);
-    setOpenDialog(true);
   };
 
   const handleDeleteProject = (projectId) => {
@@ -875,7 +851,6 @@ function Projects() {
       };
       setProjects([...projects, newProject]);
     }
-    setOpenDialog(false);
   };
 
   const handleSetupWizardComplete = (projectData) => {

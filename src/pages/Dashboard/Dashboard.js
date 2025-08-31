@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Grid,
@@ -24,9 +24,8 @@ import {
   Warning as WarningIcon,
   Schedule as ScheduleIcon,
   Construction as ConstructionIcon,
-  Foundation as FoundationIcon,
-  Home as HomeIcon,
   Engineering as EngineeringIcon,
+  Add as AddIcon,
 } from '@mui/icons-material';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -181,16 +180,7 @@ const getStatusColor = (status) => {
   }
 };
 
-const getStatusIcon = (status) => {
-  switch (status) {
-    case 'completed': return <CheckCircleIcon />;
-    case 'in_progress': return <ConstructionIcon />;
-    case 'construction': return <ConstructionIcon />;
-    case 'on_track': return <CheckCircleIcon />;
-    case 'delayed': return <WarningIcon />;
-    default: return <ScheduleIcon />;
-  }
-};
+
 
 const StatCard = ({ title, value, icon, color, subtitle }) => (
   <Card sx={{ height: '100%' }}>
