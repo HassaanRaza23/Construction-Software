@@ -412,11 +412,14 @@ const UpdateProgressDialog = ({ open, onClose, onSave, phaseData, phaseType, flo
   };
 
   const getPhaseTitle = () => {
-    if (floorNumber !== undefined) {
+    if (floorNumber !== undefined && phaseType) {
       const floorNames = ['Ground Floor', '1st Floor', '2nd Floor', '3rd Floor', '4th Floor', '5th Floor', '6th Floor', '7th Floor'];
       return `${floorNames[floorNumber]} - ${phaseType.replace(/([A-Z])/g, ' $1').trim()}`;
     }
-    return phaseType.replace(/([A-Z])/g, ' $1').trim();
+    if (phaseType) {
+      return phaseType.replace(/([A-Z])/g, ' $1').trim();
+    }
+    return 'Update Progress';
   };
 
   return (
@@ -483,7 +486,7 @@ function ProjectDetail() {
   const [updateData, setUpdateData] = useState({});
 
   const handleUpdatePhase = (phaseKey, phaseData) => {
-    setUpdateData({ type: 'phase', key: phaseKey, data: phaseData });
+    setUpdateData({ type: 'phase', key: phaseKey, phaseType: phaseKey, data: phaseData });
     setOpenUpdateDialog(true);
   };
 
