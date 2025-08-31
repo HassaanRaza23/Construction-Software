@@ -11,6 +11,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  TextField,
   IconButton,
   Tooltip,
   Stepper,
@@ -26,12 +27,9 @@ import {
 import {
   Add as AddIcon,
   LocationOn as LocationIcon,
-  Edit as EditIcon,
   Delete as DeleteIcon,
   Visibility as ViewIcon,
   CheckCircle as CheckCircleIcon,
-  Assignment as AssignmentIcon,
-  Construction as ConstructionIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -271,7 +269,7 @@ const getStatusColor = (status) => {
 
 
 
-const ProjectCard = ({ project, onEdit, onDelete, onView }) => {
+const ProjectCard = ({ project, onDelete, onView }) => {
   const navigate = useNavigate();
 
   const handleView = () => {
@@ -364,11 +362,6 @@ const ProjectCard = ({ project, onEdit, onDelete, onView }) => {
             <Tooltip title="View Construction Progress">
               <IconButton size="small" onClick={handleView} color="primary">
                 <ViewIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit Project">
-              <IconButton size="small" onClick={() => onEdit(project)} color="info">
-                <EditIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete Project">
@@ -824,34 +817,19 @@ const ProjectSetupWizard = ({ open, onClose, onSave }) => {
 
 function Projects() {
   const [projects, setProjects] = useState(mockProjects);
-  const [editingProject, setEditingProject] = useState(null);
   const [openSetupWizard, setOpenSetupWizard] = useState(false);
 
   const handleAddProject = () => {
     setOpenSetupWizard(true);
   };
 
-  const handleEditProject = (project) => {
-    setEditingProject(project);
-  };
+
 
   const handleDeleteProject = (projectId) => {
     setProjects(projects.filter(p => p.id !== projectId));
   };
 
-  const handleSaveProject = (projectData) => {
-    if (editingProject) {
-      setProjects(projects.map(p => p.id === editingProject.id ? { ...p, ...projectData } : p));
-    } else {
-      const newProject = {
-        ...projectData,
-        id: Date.now(),
-        status: 'construction',
-        lastUpdated: new Date().toISOString(),
-      };
-      setProjects([...projects, newProject]);
-    }
-  };
+
 
   const handleSetupWizardComplete = (projectData) => {
     // Create new project with construction progress structure
@@ -942,7 +920,6 @@ function Projects() {
           <Grid item xs={12} sm={6} lg={4} key={project.id}>
             <ProjectCard
               project={project}
-              onEdit={handleEditProject}
               onDelete={handleDeleteProject}
               onView={() => {}}
             />

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import {
   Box,
   Grid,
@@ -28,10 +27,7 @@ import {
   AccordionDetails,
 } from '@mui/material';
 import {
-  CheckCircle as CheckCircleIcon,
-  Assignment as AssignmentIcon,
   Engineering as EngineeringIcon,
-  Construction as ConstructionIcon,
   ExpandMore as ExpandMoreIcon,
   Update as UpdateIcon,
   Person as PersonIcon,

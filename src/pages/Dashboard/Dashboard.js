@@ -21,7 +21,6 @@ import {
   People as PeopleIcon,
   TrendingUp as TrendingUpIcon,
   CheckCircle as CheckCircleIcon,
-  Warning as WarningIcon,
   Schedule as ScheduleIcon,
   Construction as ConstructionIcon,
   Engineering as EngineeringIcon,
