@@ -160,7 +160,21 @@ export let projects = [
       },
       stakeholders: {
         architect: { name: 'Arch. Ahmed Khan', contact: '0300-1234567', fee: 'PKR 500,000' },
-        contractor: { name: 'Karachi Builders', contact: '0321-9876543', contractAmount: 'PKR 15,000,000' }
+        contractor: { name: 'Karachi Builders', contact: '0321-9876543', contractAmount: 'PKR 15,000,000' },
+        engineers: [],
+        supervisors: []
+      },
+      approvals: {
+        planApprovalDate: '2024-01-25',
+        planApprovalNumber: 'PA-2024-001',
+        saleNocDate: '2024-02-01',
+        saleNocNumber: 'NOC-2024-001'
+      },
+      financial: {
+        landAmount: 'PKR 25,000,000',
+        legalFees: 'PKR 200,000',
+        transferFees: 'PKR 150,000',
+        totalBudget: 'PKR 50,000,000'
       }
     },
     construction: {

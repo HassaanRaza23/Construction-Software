@@ -140,7 +140,7 @@ const ProjectList = () => {
                   </Typography>
                 )}
 
-                {project.currentPhase === PROJECT_PHASES.CONSTRUCTION && project.construction.floors.length > 0 && (
+                {project.currentPhase === PROJECT_PHASES.CONSTRUCTION && project.construction?.floors?.length > 0 && (
                   <Typography variant="body2" color="textSecondary">
                     Floors: {project.construction.floors.length} | Current: {
                       project.construction.currentFloor > 0 ? 

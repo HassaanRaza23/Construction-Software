@@ -63,7 +63,11 @@ const NewProject = () => {
           newErrors.landArea = 'Land area is required';
         }
         break;
-      // Add more validation as needed
+      case 2: // Stakeholders
+      case 3: // Financial
+      default:
+        // No specific validation for these steps yet
+        break;
     }
     
     setErrors(newErrors);

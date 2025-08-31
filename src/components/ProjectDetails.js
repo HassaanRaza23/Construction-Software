@@ -14,7 +14,7 @@ import {
   ListItemText,
   ListItemIcon,
   Button,
-  IconButton,
+
   Dialog,
   DialogTitle,
   DialogContent,
@@ -213,10 +213,10 @@ const ProjectDetails = () => {
               <strong>Client:</strong> {project.client}
             </Typography>
             <Typography variant="body2" color="textSecondary" gutterBottom>
-              <strong>Land Area:</strong> {project.preConstruction.landDetails.area}
+              <strong>Land Area:</strong> {project.preConstruction?.landDetails?.area || 'Not specified'}
             </Typography>
             <Typography variant="body2" color="textSecondary" gutterBottom>
-              <strong>Piling Required:</strong> {project.preConstruction.soilTest.pilingRequired ? 'Yes' : 'No'}
+              <strong>Piling Required:</strong> {project.preConstruction?.soilTest?.pilingRequired ? 'Yes' : 'No'}
             </Typography>
             
             <Box mt={2}>
@@ -231,12 +231,12 @@ const ProjectDetails = () => {
         <Card sx={{ mt: 2 }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>Stakeholders</Typography>
-            {project.preConstruction.stakeholders.architect.name && (
+            {project.preConstruction?.stakeholders?.architect?.name && (
               <Typography variant="body2" gutterBottom>
                 <strong>Architect:</strong> {project.preConstruction.stakeholders.architect.name}
               </Typography>
             )}
-            {project.preConstruction.stakeholders.contractor.name && (
+            {project.preConstruction?.stakeholders?.contractor?.name && (
               <Typography variant="body2" gutterBottom>
                 <strong>Contractor:</strong> {project.preConstruction.stakeholders.contractor.name}
               </Typography>
@@ -487,55 +487,60 @@ const ProjectDetails = () => {
     </Grid>
   );
 
-  const renderFinancialTab = () => (
-    <Grid container spacing={3}>
-      <Grid item xs={12} md={6}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>Budget Overview</Typography>
-            <Box mb={2}>
-              <Typography variant="body2" color="textSecondary">Total Budget</Typography>
-              <Typography variant="h5">{project.preConstruction.financial.totalBudget}</Typography>
-            </Box>
-            
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Typography variant="body2" color="textSecondary">Land Amount</Typography>
-                <Typography variant="h6">{project.preConstruction.financial.landAmount}</Typography>
+  const renderFinancialTab = () => {
+    const financial = project.preConstruction?.financial || {};
+    const contractor = project.preConstruction?.stakeholders?.contractor || {};
+    
+    return (
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>Budget Overview</Typography>
+              <Box mb={2}>
+                <Typography variant="body2" color="textSecondary">Total Budget</Typography>
+                <Typography variant="h5">{financial.totalBudget || 'Not specified'}</Typography>
+              </Box>
+              
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="textSecondary">Land Amount</Typography>
+                  <Typography variant="h6">{financial.landAmount || 'Not specified'}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="textSecondary">Contract Amount</Typography>
+                  <Typography variant="h6">{contractor.contractAmount || 'Not specified'}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="textSecondary">Legal Fees</Typography>
+                  <Typography variant="h6">{financial.legalFees || 'Not specified'}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="textSecondary">Transfer Fees</Typography>
+                  <Typography variant="h6">{financial.transferFees || 'Not specified'}</Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2" color="textSecondary">Contract Amount</Typography>
-                <Typography variant="h6">{project.preConstruction.stakeholders.contractor.contractAmount}</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2" color="textSecondary">Legal Fees</Typography>
-                <Typography variant="h6">{project.preConstruction.financial.legalFees}</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2" color="textSecondary">Transfer Fees</Typography>
-                <Typography variant="h6">{project.preConstruction.financial.transferFees}</Typography>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      <Grid item xs={12} md={6}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>Payment Tracking</Typography>
-            <Typography variant="body2" color="textSecondary" gutterBottom>
-              Track payments to contractors, suppliers, and other stakeholders
-            </Typography>
-            
-            <Alert severity="info">
-              Payment tracking module - Coming soon
-            </Alert>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>Payment Tracking</Typography>
+              <Typography variant="body2" color="textSecondary" gutterBottom>
+                Track payments to contractors, suppliers, and other stakeholders
+              </Typography>
+              
+              <Alert severity="info">
+                Payment tracking module - Coming soon
+              </Alert>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
-  );
+    );
+  };
 
   return (
     <Box>

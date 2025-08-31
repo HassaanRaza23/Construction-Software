@@ -135,7 +135,7 @@ const Dashboard = () => {
                     Avg. Progress
                   </Typography>
                   <Typography variant="h4">
-                    {Math.round(projects.reduce((acc, p) => acc + calculateProgress(p), 0) / projects.length)}%
+                    {projects.length > 0 ? Math.round(projects.reduce((acc, p) => acc + calculateProgress(p), 0) / projects.length) : 0}%
                   </Typography>
                 </Box>
               </Box>
@@ -181,7 +181,7 @@ const Dashboard = () => {
                     />
                   </Box>
                   
-                  {project.currentPhase === PROJECT_PHASES.CONSTRUCTION && (
+                  {project.currentPhase === PROJECT_PHASES.CONSTRUCTION && project.construction?.floors?.length > 0 && (
                     <Typography variant="body2" color="textSecondary">
                       Current Floor: {project.construction.currentFloor > 0 ? 
                         project.construction.floors[project.construction.currentFloor - 1]?.number : 'Ground'}
